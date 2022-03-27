@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  borg:
+    image: tgbyte/borg-backup:1.2.0
+    volumes:
+    - host_keys:/var/lib/docker-borg/
+    ports:
+    - '21020:22'
+  tailscaled:
+    image: tailscale/tailscale
+    # start tailscale daemon
+    # launch with the provided auth key
+    # wait for the daemon to exit
+    command: ['sh', '-c', 'tailscaled & pid=$$!; tailscale up --auth-key=${TAILSCALE_AUTH_KEY}; wait $$pid']
+    network_mode: host
+    privileged: true
+    volumes:
+    - /var/lib:/var/lib
+    - /dev/net/tun:/dev/net/tun
+
+volumes:
+  host_keys:

@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  borg:
+    image: tgbyte/borg-backup:1.2.0
+    volumes:
+    - host_keys:/var/lib/docker-borg/
+    ports:
+    - '21020:22'
+
+volumes:
+  host_keys:
